@@ -43,6 +43,7 @@ commands:
       - "python scripts/convert.py 0.8"
     deps:
       - "scripts/convert.py"
+      - "../filtered.csv.gz"
     outputs:
       - "corpus/train.spacy"
       - "corpus/dev.spacy"
