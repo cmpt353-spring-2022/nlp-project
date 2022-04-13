@@ -24,13 +24,13 @@ def main():
         gen = api.search_submissions(
             domain=sys.argv[2],
             filter=["id", "full_link", "created_utc", "url", "title", "subreddit", "author", "upvote_ratio", "score"],
-            limit=10000,
+            limit=100000,
         )
     elif (sys.argv[1] == 'subreddit'):
         gen = api.search_submissions(
             subreddit=sys.argv[2],
             filter=["id", "full_link", "created_utc", "url", "title", "subreddit", "author", "upvote_ratio", "score"],
-            limit=10000,
+            limit=100000,
         )
 
     output_file = sys.argv[3] + ".csv.gz"

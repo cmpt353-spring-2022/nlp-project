@@ -10,10 +10,10 @@ def data_summary(df: pd.DataFrame, name: str):
     print()
 
 
-apnews = pd.read_csv("apnews.csv.gz")
-apnews["created"] = pd.to_datetime(apnews["created"], unit="s")
-data_summary(apnews, "AP news")
+def process_data(file: str):
+    data = pd.read_csv(f"{file}.csv.gz")
+    data["created"] = pd.to_datetime(data["created"], unit="s")
+    data_summary(data, file)
 
-clickbait = pd.read_csv("clickbait.csv.gz")
-clickbait["created"] = pd.to_datetime(clickbait["created"], unit="s")
-data_summary(clickbait, "Clickbait")
+
+[process_data(x) for x in ["apnews", "clickbait", "npr"]]
