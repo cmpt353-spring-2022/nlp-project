@@ -1,0 +1,58 @@
+train:
+  cmd: python -m spacy run train
+  script:
+    - python -m spacy train configs/config.conf --output training/ --paths.train corpus/train.spacy
+      --paths.dev corpus/dev.spacy --nlp.lang en --gpu-id -1
+  deps:
+    - path: configs/config.conf
+      md5: 62edaefafb07e5a1eee4a61bad9228f2
+    - path: corpus/train.spacy
+      md5: 962d16f34c87102074f031b44ecceca8
+    - path: corpus/dev.spacy
+      md5: 413044b7a592f7d5f3752b3c27113298
+  outs:
+    - path: training/model-best
+      md5: bca4710427cb7c6ffaa8babe9727e1c7
+  spacy_version: 3.2.4
+  spacy_git_version: b50fe5ec6
+convert:
+  cmd: python -m spacy run convert
+  script:
+    - python scripts/convert.py 0.8
+  deps:
+    - path: scripts/convert.py
+      md5: b7aa4dbdc7f65f2df19e7db35580bd47
+  outs:
+    - path: corpus/train.spacy
+      md5: 962d16f34c87102074f031b44ecceca8
+    - path: corpus/dev.spacy
+      md5: 413044b7a592f7d5f3752b3c27113298
+  spacy_version: 3.2.4
+  spacy_git_version: b50fe5ec6
+evaluate:
+  cmd: python -m spacy run evaluate
+  script:
+    - python -m spacy evaluate training/model-best corpus/dev.spacy --output training/metrics.json
+  deps:
+    - path: corpus/dev.spacy
+      md5: 413044b7a592f7d5f3752b3c27113298
+    - path: training/model-best
+      md5: bca4710427cb7c6ffaa8babe9727e1c7
+  outs:
+    - path: training/metrics.json
+      md5: c769424fcd1b0cb6240f5e9f90d3bb0a
+  spacy_version: 3.2.4
+  spacy_git_version: b50fe5ec6
+package:
+  cmd: python -m spacy run package
+  script:
+    - python -m spacy package training/model-best packages --name textcat_clickbait
+      --version 0.0.0 --force
+  deps:
+    - path: training/model-best
+      md5: e0461edc5d702db8bb586b061d4e1593
+  outs:
+    - path: packages/en_textcat_clickbait-0.0.0/dist/en_textcat_clickbait-0.0.0.tar.gz
+      md5: ef6fe6c1580a381dfb4a8817768b209a
+  spacy_version: 3.2.4
+  spacy_git_version: b50fe5ec6
