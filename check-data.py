@@ -16,4 +16,4 @@ def process_data(file: str):
     data_summary(data, file)
 
 
-[process_data(x) for x in ["apnews", "clickbait", "npr"]]
+[process_data(x) for x in ["apnews", "clickbait", "npr", "pbs"]]
