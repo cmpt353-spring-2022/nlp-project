@@ -127,7 +127,7 @@ model_percp.fit(X_train, y_train)
 #groups it by month of the year to get enough data points for statistical testing
 
 sub_data_files = ["data/UpliftingNews_lg.csv.gz", "data/nottheonion_lg.csv.gz", "data/worldnews_lg.csv.gz", "data/politics_lg.csv.gz"]
-
+names = ["Uplifting News", "Not The Onion", "World News", "Politics"]
 
 def predict(subreddit: str, model: Pipeline):
     df = pd.read_csv(subreddit)
@@ -143,16 +143,16 @@ def predict(subreddit: str, model: Pipeline):
     return df
 
 
-for file in sub_data_files:
+for file, names in zip(sub_data_files, names):
     df = predict(file, model_percp)
     output, test_res = analyze.get_cb_ratio(df)
     print(test_res)
-    plt.plot(output.year, output.cb_ratio, label=file)
+    plt.plot(output.year, output.cb_ratio, label=names)
 
 
 sns.set_theme()
 
-plt.legend(loc="upper left")
+plt.legend( bbox_to_anchor=(1.05, 1),loc="upper left")
 plt.xlabel("Year")
 plt.ylabel("% of clickbait titles")
 plt.title("Percentage of clickbait titles in selected news subreddits over the years")
