@@ -2,7 +2,7 @@ train:
   cmd: python -m spacy run train
   script:
     - python -m spacy train configs/config.conf --output training/ --paths.train corpus/train.spacy
-      --paths.dev corpus/dev.spacy --nlp.lang en --gpu-id -1
+      --paths.dev corpus/dev.spacy --nlp.lang en --gpu-id 0
   deps:
     - path: configs/config.conf
       md5: 62edaefafb07e5a1eee4a61bad9228f2
@@ -12,7 +12,7 @@ train:
       md5: 7ac945af1aa33fce00e3cd9c5e46df34
   outs:
     - path: training/model-best
-      md5: c22f00e5917a38fdc45e7c7bc966dd9f
+      md5: 6339b6a09302942de54041fc7b869139
   spacy_version: 3.2.4
   spacy_git_version: b50fe5ec6
 convert:
@@ -21,8 +21,8 @@ convert:
     - python scripts/convert.py 0.8
   deps:
     - path: scripts/convert.py
-      md5: c8c7a5670f8481c8b56dc5514107306c
-    - path: ../filtered.csv.gz
+      md5: 4faed0c5c0b7f8d0828429a80a075ce1
+    - path: ../data/filtered.csv.gz
       md5: 4d6eb265d2b0c5cb1b7b347ff3925cfb
   outs:
     - path: corpus/train.spacy
@@ -39,10 +39,10 @@ evaluate:
     - path: corpus/dev.spacy
       md5: 7ac945af1aa33fce00e3cd9c5e46df34
     - path: training/model-best
-      md5: c22f00e5917a38fdc45e7c7bc966dd9f
+      md5: 6339b6a09302942de54041fc7b869139
   outs:
     - path: training/metrics.json
-      md5: 4afd527388a9ef91a643bb9b9eeba455
+      md5: e3cf724af8e7242f8a83cbeedb373511
   spacy_version: 3.2.4
   spacy_git_version: b50fe5ec6
 package:
@@ -52,9 +52,23 @@ package:
       --version 0.0.0 --force
   deps:
     - path: training/model-best
-      md5: e0461edc5d702db8bb586b061d4e1593
+      md5: 6339b6a09302942de54041fc7b869139
   outs:
     - path: packages/en_textcat_clickbait-0.0.0/dist/en_textcat_clickbait-0.0.0.tar.gz
-      md5: ef6fe6c1580a381dfb4a8817768b209a
+      md5: 30054b540a2267745734ecf7fd5567e5
+  spacy_version: 3.2.4
+  spacy_git_version: b50fe5ec6
+predict:
+  cmd: python -m spacy run predict
+  script:
+    - python scripts/analyze-trends.py
+  deps:
+    - path: ../data
+      md5: c5a0b77f9af06808f813690ed39de3f2
+    - path: scripts/analyze-trends.py
+      md5: d03c462825d07cbce808a0ac61ae165d
+    - path: scripts/en_textcat_clickbait
+      md5: 4b0e75c5f64a8ae4e1d558baa5f314d1
+  outs: []
   spacy_version: 3.2.4
   spacy_git_version: b50fe5ec6

@@ -1,3 +1,5 @@
 training/
 packages/
 corpus/
+predictions/
+en_textcat_clickbait/

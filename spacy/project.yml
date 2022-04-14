@@ -13,7 +13,7 @@ vars:
 
 # These are the directories that the project needs. The project CLI will make
 # sure that they always exist.
-directories: ["corpus", "configs", "training", "packages"]
+directories: ["corpus", "configs", "training", "packages", "predictions"]
 
 # Assets that should be downloaded or available in the directory
 assets:
@@ -30,6 +30,7 @@ workflows:
     - convert
     - train
     - evaluate
+    - package
     - visualize-model
 
 # Project commands, specified in a style similar to CI config files (e.g. Azure
@@ -43,7 +44,7 @@ commands:
       - "python scripts/convert.py 0.8"
     deps:
       - "scripts/convert.py"
-      - "../filtered.csv.gz"
+      - "../data/filtered.csv.gz"
     outputs:
       - "corpus/train.spacy"
       - "corpus/dev.spacy"
@@ -85,3 +86,12 @@ commands:
     deps:
       - "scripts/visualize_model.py"
       - "training/model-best"
+
+  - name: predict
+    help: Run predictions on trained data
+    script:
+      - 'python scripts/analyze-trends.py'
+    deps:
+      - "../data"
+      - "scripts/analyze-trends.py"
+      - "scripts/en_textcat_clickbait"
