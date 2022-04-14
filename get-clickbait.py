@@ -11,4 +11,4 @@ gen = api.search_submissions(
 
 df = pd.DataFrame([thing.d_ for thing in gen])
 
-df.to_csv("clickbait.csv.gz", index=False, compression="gzip")
+df.to_csv("data/clickbait.csv.gz", index=False, compression="gzip")

@@ -30,10 +30,11 @@ def main():
         gen = api.search_submissions(
             subreddit=sys.argv[2],
             filter=["id", "full_link", "created_utc", "url", "title", "subreddit", "author", "upvote_ratio", "score"],
-            limit=100000,
+            limit=1000000,
+            score=">5"
         )
 
-    output_file = sys.argv[3] + ".csv.gz"
+    output_file = "data/" + sys.argv[3] + ".csv.gz"
 
     df = pd.DataFrame([thing.d_ for thing in gen])
     df.to_csv(output_file, index=False, compression="gzip")

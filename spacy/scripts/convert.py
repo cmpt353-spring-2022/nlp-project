@@ -11,7 +11,7 @@ def main(training_ratio: float, use_filtered: bool = True):
     print(f"Using training ratio of {training_ratio}")
 
     if (not use_filtered):
-        clickbait = pd.read_csv("../clickbait.csv.gz")
+        clickbait = pd.read_csv("../data/clickbait.csv.gz")
         clickbait["created"] = pd.to_datetime(clickbait["created"], unit="s")
         clickbait["title"] = clickbait["title"].str.split("|").str.get(0)
         clickbait = clickbait[clickbait["score"] > 5]
@@ -40,7 +40,7 @@ def main(training_ratio: float, use_filtered: bool = True):
         )
         valid_data = valid_data.sample(frac=1).reset_index(drop=True)
     else:
-        data = pd.read_csv('../filtered.csv.gz')
+        data = pd.read_csv('../data/filtered.csv.gz')
 
         training_count = int(training_ratio * len(data))
         

@@ -11,4 +11,4 @@ gen = api.search_submissions(
 
 df = pd.DataFrame([thing.d_ for thing in gen])
 
-df.to_csv("apnews.csv.gz", index=False, compression="gzip")
+df.to_csv("data/apnews.csv.gz", index=False, compression="gzip")

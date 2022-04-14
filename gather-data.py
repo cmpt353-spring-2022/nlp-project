@@ -63,4 +63,4 @@ data = pd.DataFrame({"title": titles,
 data.title = data.title.str.split(r'|').str.get(0)
 data = data.drop_duplicates(subset=['title'])
 
-data.to_csv('clickbait_titles.csv', index=False)
+data.to_csv('data/clickbait_titles.csv', index=False)

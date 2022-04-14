@@ -12,7 +12,7 @@ def data_summary(df: pd.DataFrame, name: str):
 
 
 def process_data(file: str):
-    data = pd.read_csv(f"{file}.csv.gz")
+    data = pd.read_csv(f"data/{file}.csv.gz")
     data["created"] = pd.to_datetime(data["created"], unit="s")
     data_summary(data, file)
 
