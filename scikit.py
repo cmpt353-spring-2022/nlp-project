@@ -126,8 +126,8 @@ model_percp.fit(X_train, y_train)
 
 #groups it by month of the year to get enough data points for statistical testing
 
-sub_data_files = ["data/UpliftingNews_lg.csv.gz", "data/nottheonion_lg.csv.gz", "data/worldnews_lg.csv.gz", "data/politics_lg.csv.gz"]
-names = ["Uplifting News", "Not The Onion", "World News", "Politics"]
+sub_data_files = ["data/UpliftingNews_lg.csv.gz", "data/nottheonion_lg.csv.gz", "data/worldnews_lg.csv.gz", "data/politics_lg.csv.gz", "data/canadapolitics_lg.csv.gz", "data/news_lg.csv.gz"]
+names = ["Uplifting News", "Not The Onion", "World News", "Politics", "Canada Politics", "News"]
 
 def predict(subreddit: str, model: Pipeline):
     df = pd.read_csv(subreddit)
