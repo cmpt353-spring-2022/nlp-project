@@ -48,7 +48,7 @@ model_percp = make_pipeline(
 
 model_percp.fit(X_train, y_train)
 
-# print("Using Term Frequency–Inverse Document Frequency")
+# print("Using Term Frequency-Inverse Document Frequency")
 
 # model_NB_M.score(X_test, y_test)
 # print("Multinomial", model_NB_M.score(X_test, y_test))
@@ -126,51 +126,56 @@ model_percp.fit(X_train, y_train)
 
 #groups it by month of the year to get enough data points for statistical testing
 
-sub_data_files = ["data/UpliftingNews_lg.csv.gz", "data/nottheonion_lg.csv.gz", "data/worldnews_lg.csv.gz", "data/politics_lg.csv.gz"]
-names = ["Uplifting News", "Not The Onion", "World News", "Politics"]
+# =============================================================================
+sub_data_files = ["data/UpliftingNews_lg.csv.gz", "data/nottheonion_lg.csv.gz", "data/worldnews_lg.csv.gz", "data/politics_lg.csv.gz", "data/science_lg.csv.gz"]
+names = ["Uplifting News", "Not The Onion", "World News", "Politics", "Science"]
+# 
+# def predict(subreddit: str, model: Pipeline):
+#     df = pd.read_csv(subreddit)
+#     df = df.dropna(subset=['title'])
+#     if ('created' in df.columns):
+#         df['created'] = pd.to_datetime(df["created"], unit="s")
+#     else:
+#         df['created'] = df['created_utc']
+#     df['year'] = pd.DatetimeIndex(df['created']).year
+#     df['Y_M'] = pd.DatetimeIndex(df['created']).to_period("M")
+#     df['prediction'] = model.predict(df.title)
+#     # maybe save these predictions, so we don't have to re-run this
+#     return df
+# 
+# 
+# for file, names in zip(sub_data_files, names):
+#     df = predict(file, model_percp)
+#     output, test_res = analyze.get_cb_ratio(df)
+#     print(test_res)
+#     plt.plot(output.year, output.cb_ratio, label=names)
+# 
+# 
+# sns.set_theme()
+# 
+# plt.legend( bbox_to_anchor=(1.05, 1),loc="upper left")
+# plt.xlabel("Year")
+# plt.ylabel("% of clickbait titles")
+# plt.title("Percentage of clickbait titles in selected news subreddits over the years")
+# plt.show()
+# =============================================================================
 
-def predict(subreddit: str, model: Pipeline):
-    df = pd.read_csv(subreddit)
+
+plt.figure()
+
+df_all = pd.DataFrame()
+
+for file, name in zip(sub_data_files, names):
+    df = pd.read_csv(file)
     df = df.dropna(subset=['title'])
-    if ('created' in df.columns):
-        df['created'] = pd.to_datetime(df["created"], unit="s")
-    else:
-        df['created'] = df['created_utc']
-    df['year'] = pd.DatetimeIndex(df['created']).year
-    df['Y_M'] = pd.DatetimeIndex(df['created']).to_period("M")
-    df['prediction'] = model.predict(df.title)
-    # maybe save these predictions, so we don't have to re-run this
-    return df
+    df["prediction"] = model_percp.predict(df.title)
+    df_res = analyze.ratio_by_score(df, 4)
+    df_res['name'] = name
+    df_all = pd.concat([df_all, df_res])
+    print(df_all)
 
-
-for file, names in zip(sub_data_files, names):
-    df = predict(file, model_percp)
-    output, test_res = analyze.get_cb_ratio(df)
-    print(test_res)
-    plt.plot(output.year, output.cb_ratio, label=names)
-
-
-sns.set_theme()
-
-plt.legend( bbox_to_anchor=(1.05, 1),loc="upper left")
-plt.xlabel("Year")
-plt.ylabel("% of clickbait titles")
-plt.title("Percentage of clickbait titles in selected news subreddits over the years")
-plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+df_all = df_all.reset_index()
+df_all.pivot("name", "index", "prediction").plot(kind="bar")
 
 
 
