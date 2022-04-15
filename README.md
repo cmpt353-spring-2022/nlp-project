@@ -66,11 +66,13 @@ TODO: Describe analysis of the prediction results
 - Create environment (Windows):
 
     `> python -m venv venv`
+
     `> ./venv/scripts/activate`
 
 - Create environment (Linux/Mac):
 
     `> python -m venv venv`
+
     `> source ./venv/bin/activate`
 
 ### Download and install requirements
