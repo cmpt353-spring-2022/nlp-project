@@ -13,6 +13,8 @@ sub_data_files = [
     "../data/nottheonion_lg.csv.gz",
     "../data/worldnews_lg.csv.gz",
     "../data/politics_lg.csv.gz",
+    "../data/news_lg.csv.gz",
+    "../data/canadapolitics_lg.csv.gz",
 ]
 
 
@@ -47,14 +49,15 @@ def main():
         print("Using CPU for predictions")
     nlp = en_textcat_clickbait.load()
     for file in sub_data_files:
-        output_file = f"predictions/{Path(Path(file).stem).stem}.csv.gz"
+        name = Path(Path(file).stem).stem
+        output_file = f"predictions/{name}.csv.gz"
         if not os.path.isfile(output_file):
             df = predict(file, nlp, output_file)
         else:
             df = pd.read_csv(output_file)
         output, test_res = analyze.get_cb_ratio(df)
         print(test_res)
-        plt.plot(output.year, output.cb_ratio, label=file)
+        plt.plot(output.year, output.cb_ratio, label=name)
     sns.set_theme()
 
     plt.legend(loc="upper left")

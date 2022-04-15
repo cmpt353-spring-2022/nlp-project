@@ -64,9 +64,9 @@ predict:
     - python scripts/analyze-trends.py
   deps:
     - path: ../data
-      md5: c5a0b77f9af06808f813690ed39de3f2
+      md5: 3c80e249c85a1b4c86df4538f34191b1
     - path: scripts/analyze-trends.py
-      md5: d03c462825d07cbce808a0ac61ae165d
+      md5: 5f340171a55c6881461cef9ff70658e9
     - path: scripts/en_textcat_clickbait
       md5: 4b0e75c5f64a8ae4e1d558baa5f314d1
   outs: []
