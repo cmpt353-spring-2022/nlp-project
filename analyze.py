@@ -1,3 +1,5 @@
+from re import sub
+import numpy as np
 import pandas as pd
 import pymannkendall as mk
 
@@ -26,3 +28,16 @@ def get_cb_ratio(subreddit: pd.DataFrame):
 
 
 
+#clickbait rate by score
+def ratio_by_score(subreddit: pd.DataFrame, partitions):
+    df = subreddit[subreddit.score > 5]
+    length = df.shape[0]
+    df = df.sort_values(by="score").reset_index(drop=True)
+    df["part_num"] = np.vectorize(partition_num)(df.index, df.shape[0], partitions)
+    df = df[df.prediction == 1]
+    df = df.groupby(by="part_num").sum().reset_index(drop=True)
+    df["prediction"] = df["prediction"] / (length/partitions)
+    return df
+
+def partition_num(index, length, partitions):
+    return np.floor(index / (length/partitions))
