@@ -60,16 +60,21 @@ TODO: Describe analysis of the prediction results
 
 ### Create virtual environment using virtualenv (Optional)
 - Download and install:
-	`> pip install virtualenv`
+
+    `> pip install virtualenv`
+
 - Create environment (Windows):
-	`> python -m venv venv`
-	`> ./venv/scripts/activate`
+
+    `> python -m venv venv`
+    `> ./venv/scripts/activate`
+
 - Create environment (Linux/Mac):
-        `> python -m venv venv`
-	`> source ./venv/bin/activate`
+
+    `> python -m venv venv`
+    `> source ./venv/bin/activate`
 
 ### Download and install requirements
-* `> pip install -r requirements.txt`
+- `> pip install -r requirements.txt`
 
 ## Usage
 
