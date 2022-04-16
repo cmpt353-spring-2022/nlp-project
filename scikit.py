@@ -128,12 +128,12 @@ sub_data_files = ["data/classification/upliftingnews.csv.gz",
                  "data/classification/politics.csv.gz", 
                  "data/classification/news.csv.gz",
                  "data/classification/canadapolitics.csv.gz"]
-names = ["Uplifting News", 
-        "Not The Onion", 
-        "World News", 
-        "Politics", 
-        "News",
-        "Canada Politics"]
+names = ["r/UpliftingNews", 
+        "r/NotTheOnion", 
+        "r/WorldNews", 
+        "r/Politics", 
+        "r/News",
+        "r/CanadaPolitics"]
 
 def predict(subreddit: str, model: Pipeline):
     df = pd.read_csv(subreddit)
@@ -169,7 +169,18 @@ plt.figure(dpi=1200)
 
 df_all = pd.DataFrame()
 
-
+sub_data_files = ["data/classification/upliftingnews.csv.gz", 
+                "data/classification/nottheonion.csv.gz",\
+                 "data/classification/worldnews.csv.gz", 
+                 "data/classification/politics.csv.gz", 
+                 "data/classification/news.csv.gz",
+                 "data/classification/canadapolitics.csv.gz"]
+names = ["r/UpliftingNews", 
+        "r/NotTheOnion", 
+        "r/WorldNews", 
+        "r/Politics", 
+        "r/News",
+        "r/CanadaPolitics"]
 
 #For plotting
 for file, name in zip(sub_data_files, names):
