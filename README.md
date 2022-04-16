@@ -57,6 +57,8 @@ Results from all 3 approaches differed a bit, but still showed the same trends, 
 
 - `python check-data.py`
 
+> Note: We used terminal arguments when gathering data, so be careful of naming if testing this file.
+
 ### Data cleaning
 
 - `python clean-training-data.py`
@@ -74,3 +76,20 @@ Results from all 3 approaches differed a bit, but still showed the same trends, 
 - `python analyze.py`
 
 - `python clickbait-means.py`
+
+
+### Using Spacy
+
+- Running everything:
+
+    `spacy project run all`
+
+- Other commands:
+
+    `spacy project run ...`
+
+        `convert`
+        `train`
+        `evaluate`
+        `visualize-model`
+
