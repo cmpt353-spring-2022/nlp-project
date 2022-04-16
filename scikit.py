@@ -1,14 +1,18 @@
+from turtle import tilt, title
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import BernoulliNB, ComplementNB, MultinomialNB
+from sklearn.linear_model import SGDClassifier
 from sklearn.linear_model import Perceptron
 from sklearn.pipeline import Pipeline,  make_pipeline
 import seaborn as sns
 import matplotlib.ticker as mticker
 import pymannkendall as mk
 import analyze
+import statsmodels.api as sm
+from scipy import stats
 
 combined = pd.read_csv("data/filtered.csv.gz")
 X_train, X_test, y_train, y_test = train_test_split(combined.title, combined.clickbait)
@@ -23,12 +27,12 @@ model_NB_M = make_pipeline(
 model_NB_M.fit(X_train, y_train)
 
 # # Naive baise Bernoulli
-model_NB_B = make_pipeline(
+model_NB_SGD = make_pipeline(
      TfidfVectorizer(),
-     BernoulliNB()
+     SGDClassifier()
  )
 
-model_NB_B.fit(X_train, y_train)
+model_NB_SGD.fit(X_train, y_train)
 
 # Naive baise Complement
 model_NB_C = make_pipeline(
@@ -50,11 +54,11 @@ model_percp.fit(X_train, y_train)
 scores = []
 
 scores.append(model_NB_M.score(X_test, y_test))
-scores.append(model_NB_B.score(X_test, y_test))
+scores.append(model_NB_SGD.score(X_test, y_test))
 scores.append(model_NB_C.score(X_test, y_test))
 scores.append(model_percp.score(X_test, y_test))
 
-names = ['Multinomial', 'Bernoulli', 'Complement', 'Perceptron']
+names = ['Multinomial', 'SGD', 'Complement', 'Perceptron']
 scores_dt = pd.DataFrame(scores, columns=["Scores"])
 scores_dt["names"] = names
 scores_dt['vectorizer'] = "Td-idf"
@@ -71,11 +75,11 @@ model_NB_M = make_pipeline(
 model_NB_M.fit(X_train, y_train)
 
 # Naive baise Bernoulli
-model_NB_B = make_pipeline(
+model_NB_SGD = make_pipeline(
     CountVectorizer(),
-    BernoulliNB()
+    SGDClassifier()
 )
-model_NB_B.fit(X_train, y_train)
+model_NB_SGD.fit(X_train, y_train)
 
 # Naive baise Complement
 model_NB_C = make_pipeline(
@@ -94,16 +98,11 @@ model_percp.fit(X_train, y_train)
 scores = []
 
 scores.append(model_NB_M.score(X_test, y_test))
-scores.append(model_NB_B.score(X_test, y_test))
+scores.append(model_NB_SGD.score(X_test, y_test))
 scores.append(model_NB_C.score(X_test, y_test))
 scores.append(model_percp.score(X_test, y_test))
 
-model_NB_M.score(X_test, y_test)
-model_NB_B.score(X_test, y_test)
-model_NB_C.score(X_test, y_test)
-model_percp.score(X_test, y_test)
-
-names = ['Multinomial', 'Bernoulli', 'Complement', 'Perceptron']
+names = ['Multinomial', 'SGD', 'Complement', 'Perceptron']
 scores_dt2 = pd.DataFrame(scores, columns=["Scores"])
 scores_dt2["names"] = names
 scores_dt2['vectorizer'] = "Count"
@@ -114,7 +113,7 @@ scores_dt.pivot("names", "vectorizer", "Scores").plot(kind="bar")
 plt.ylabel("Model Accuracy Score")
 plt.xlabel("Model Names")
 plt.title("Different ML Models Accuracy Score with Two Different Vectorizers")
-plt.legend(bbox_to_anchor=(1.05, 1.05))
+plt.legend(bbox_to_anchor=(1.05, 1.05),title="Vectorizer")
 plt.savefig("scikitModels.png", bbox_inches='tight', dpi=72)
 ### ANALYSIS ###
 
@@ -122,7 +121,6 @@ plt.savefig("scikitModels.png", bbox_inches='tight', dpi=72)
 
 #groups it by month of the year to get enough data points for statistical testing
 
-# =============================================================================
 sub_data_files = ["data/UpliftingNews_lg.csv.gz", 
                 "data/nottheonion_lg.csv.gz",\
                  "data/worldnews_lg.csv.gz", 
@@ -182,11 +180,16 @@ names = ["Uplifting News",
         "News",
         "Canada Politics"]
 
+
+#For plotting
 for file, name in zip(sub_data_files, names):
     data = pd.read_csv(file)
     data = data.dropna(subset=['title'])
-    data["prediction"] = model_NB_B.predict(data.title)
+    data["prediction"] = model_NB_C.predict(data.title)
     df_res = analyze.ratio_by_score(data, 4)
+    regress = analyze.ratio_by_score(data,30)
+    reg = stats.linregress(regress["prediction"], regress['score'])
+    print(file, ": p-value ",  reg.pvalue, ", Slope: ", reg.slope)
     df_res['subreddit'] = name
     df_all = pd.concat([df_all, df_res])
 
@@ -195,12 +198,10 @@ print(df_all)
 df_all.pivot("subreddit", "index", "prediction").plot(kind="bar")
 plt.ylabel("Clickbait Percentage (%)")
 plt.xlabel("Subreddit")
-plt.title("Clickbait Rate per Upvotes Quartile for Selected Subreddits")
-plt.legend(["0-25%", "25%-50%", "50%-75%", "75%-100%"], title="Upvotes Quartile",  bbox_to_anchor=(1.05, 1.05))
+plt.title("Clickbait Rate per Score Quartile for Selected Subreddits")
+plt.legend(["0-25%", "25%-50%", "50%-75%", "75%-100%"], title="Score Quartile",  bbox_to_anchor=(1.05, 1.05))
 
 plt.savefig("scoreVsClickbait.png", bbox_inches='tight', dpi=72)
-
-
 
 
 
