@@ -131,7 +131,7 @@ def prepare_data(data, train, num_feaures=100):
 # In[6]:
 
 
-prepared = prepare_data(training, True, 5)
+prepared = prepare_data(training, True, 1000)
 train_ratio = 0.75
 train, test = prepared[:int(len(prepared) * train_ratio)], prepared[int(len(prepared) * train_ratio):]
 
@@ -321,10 +321,10 @@ for df_info in df_predictions:
     result = visualize_results(df_info[0], 150)
     plt.plot(result * 100)
 
-plt.title('Percentage of clickbait titles in selected news subreddits (2014-2021)')
+plt.title('NLTK Naive Bayes Classifier')
 plt.legend(['r/NotTheOnion', 'r/politics', 'r/UpliftingNews', 'r/worldnews', 'r/news', 'r/CanadaPolitics'])
 plt.xlabel('Year')
-plt.ylabel('Percentage (%)')
+plt.ylabel('% of clickbait titles')
 plt.savefig('nltk_analysis.png')
 plt.close('all')
 
