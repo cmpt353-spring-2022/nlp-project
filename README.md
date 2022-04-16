@@ -74,3 +74,20 @@ Results from all 3 approaches differed a bit, but still showed the same trends, 
 - `python analyze.py`
 
 - `python clickbait-means.py`
+
+
+### Using Spacy
+
+- Running everything:
+
+    `spacy project run all`
+
+- Other commands:
+
+    `spacy project run ...`
+
+        `convert`
+        `train`
+        `evaluate`
+        `visualize-model`
+
