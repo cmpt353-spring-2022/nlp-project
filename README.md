@@ -5,7 +5,6 @@
 - [Info](#info)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Team](#team)
 
 ## Info
 
@@ -33,24 +32,22 @@ Results from all 3 approaches differed a bit, but still showed the same trends, 
 ### Create virtual environment using virtualenv (Optional)
 - Download and install:
 
-    `> pip install virtualenv`
+    `pip install virtualenv`
 
 - Create environment (Windows):
 
-    ```
-    > python -m venv venv
-    > ./venv/scripts/activate
-    ```
+    `python -m venv venv`
+
+    `./venv/scripts/activate`
 
 - Create environment (Linux/Mac):
 
-    ```
-    > python -m venv venv
-    > source ./venv/bin/activate
-    ```
+    `python -m venv venv`
+
+    `source ./venv/bin/activate`
 
 ### Download and install requirements
-- `> pip install -r requirements.txt`
+- `pip install -r requirements.txt`
 
 ## Usage
 
@@ -67,9 +64,5 @@ Results from all 3 approaches differed a bit, but still showed the same trends, 
 - TODO
 
 ### Data analysis
-
-- TODO
-
-## Team
 
 - TODO
