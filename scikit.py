@@ -10,7 +10,7 @@ import matplotlib.ticker as mticker
 import pymannkendall as mk
 import analyze
 
-combined = pd.read_csv("data/filtered.csv.gz")
+combined = pd.read_csv("data/training/training_cleaned.csv.gz")
 X_train, X_test, y_train, y_test = train_test_split(combined.title, combined.clickbait)
 
 print()
@@ -123,12 +123,12 @@ plt.savefig("scikitModels.png", bbox_inches='tight', dpi=72)
 #groups it by month of the year to get enough data points for statistical testing
 
 # =============================================================================
-sub_data_files = ["data/UpliftingNews_lg.csv.gz", 
-                "data/nottheonion_lg.csv.gz",\
-                 "data/worldnews_lg.csv.gz", 
-                 "data/politics_lg.csv.gz", 
-                 "data/news_lg.csv.gz",
-                 "data/canadapolitics_lg.csv.gz"]
+sub_data_files = ["data/classification/upliftingnews.csv.gz", 
+                "data/classification/nottheonion.csv.gz",\
+                 "data/classification/worldnews.csv.gz", 
+                 "data/classification/politics.csv.gz", 
+                 "data/classification/news.csv.gz",
+                 "data/classification/canadapolitics.csv.gz"]
 names = ["Uplifting News", 
         "Not The Onion", 
         "World News", 
@@ -169,18 +169,7 @@ plt.savefig("baitPercentage.png", dpi=72, bbox_inches='tight')
 plt.figure(dpi=1200)
 
 df_all = pd.DataFrame()
-sub_data_files = ["data/UpliftingNews_lg.csv.gz", 
-                "data/nottheonion_lg.csv.gz",\
-                 "data/worldnews_lg.csv.gz", 
-                 "data/politics_lg.csv.gz", 
-                 "data/news_lg.csv.gz",
-                 "data/canadapolitics_lg.csv.gz"]
-names = ["Uplifting News", 
-        "Not The Onion", 
-        "World News", 
-        "Politics", 
-        "News",
-        "Canada Politics"]
+
 
 for file, name in zip(sub_data_files, names):
     data = pd.read_csv(file)
