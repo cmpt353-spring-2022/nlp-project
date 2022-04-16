@@ -131,7 +131,7 @@ def prepare_data(data, train, num_feaures=100):
 # In[6]:
 
 
-prepared = prepare_data(training, True, 1000)
+prepared = prepare_data(training, True, 500)
 train_ratio = 0.75
 train, test = prepared[:int(len(prepared) * train_ratio)], prepared[int(len(prepared) * train_ratio):]
 
@@ -249,7 +249,7 @@ filtered_dfs = []
 
 for df_info in dfs:
     df = df_info[0]
-    df = df[df['score'] > 50]
+    #df = df[df['score'] > 50]
     df = df[['created_utc', 'title']]
     df['created_utc'] = pd.to_datetime(df['created_utc'], format='%Y-%m-%d %H:%M:%S')
     filtered_dfs.append((df, df_info[1]))

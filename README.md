@@ -53,16 +53,24 @@ Results from all 3 approaches differed a bit, but still showed the same trends, 
 
 ### Data collection
 
-- TODO
+- `python get-data.py <'domain' | 'subreddit'> <domain_name | subreddit_name> <output_file>`
+
+- `python check-data.py`
 
 ### Data cleaning
 
-- TODO
+- `python clean-training-data.py`
 
-### Model training
+- `python prep-classification-data.py`
 
-- TODO
+### Model training & analysis
+
+- `python nltk-training.py`
+
+- `python scikit.py`
 
 ### Data analysis
 
-- TODO
+- `python analyze.py`
+
+- `python clickbait-means.py`
