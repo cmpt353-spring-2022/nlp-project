@@ -9,12 +9,20 @@ import analyze
 from pathlib import Path
 
 sub_data_files = [
-    "../data/UpliftingNews_lg.csv.gz",
-    "../data/nottheonion_lg.csv.gz",
-    "../data/worldnews_lg.csv.gz",
-    "../data/politics_lg.csv.gz",
-    "../data/news_lg.csv.gz",
-    "../data/canadapolitics_lg.csv.gz",
+    "data/classification/upliftingnews.csv.gz",
+    "data/classification/nottheonion.csv.gz",
+    "data/classification/worldnews.csv.gz",
+    "data/classification/politics.csv.gz",
+    "data/classification/news.csv.gz",
+    "data/classification/canadapolitics.csv.gz",
+]
+names = [
+    "Uplifting News",
+    "Not The Onion",
+    "World News",
+    "Politics",
+    "News",
+    "Canada Politics",
 ]
 
 
@@ -48,7 +56,7 @@ def main():
     else:
         print("Using CPU for predictions")
     nlp = en_textcat_clickbait.load()
-    for file in sub_data_files:
+    for name, file in zip(names, sub_data_files):
         name = Path(Path(file).stem).stem
         output_file = f"predictions/{name}.csv.gz"
         if not os.path.isfile(output_file):
@@ -57,7 +65,7 @@ def main():
             df = pd.read_csv(output_file)
         output, test_res = analyze.get_cb_ratio(df)
         print(test_res)
-        plt.plot(output.year, output.cb_ratio, label=name)
+        plt.plot(output.year, output.cb_ratio, label=names)
     sns.set_theme()
 
     plt.legend(loc="upper left")

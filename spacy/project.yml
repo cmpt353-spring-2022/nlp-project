@@ -41,10 +41,10 @@ commands:
   - name: "convert"
     help: "Convert the data to spaCy's binary format"
     script:
-      - "python scripts/convert.py 0.8"
+      - "python scripts/convert.py 0.8 ../data/training/training_cleaned.csv.gz"
     deps:
       - "scripts/convert.py"
-      - "../data/filtered.csv.gz"
+      - "../data/training/training_cleaned.csv.gz"
     outputs:
       - "corpus/train.spacy"
       - "corpus/dev.spacy"
