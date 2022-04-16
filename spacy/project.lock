@@ -2,33 +2,33 @@ train:
   cmd: python -m spacy run train
   script:
     - python -m spacy train configs/config.conf --output training/ --paths.train corpus/train.spacy
-      --paths.dev corpus/dev.spacy --nlp.lang en --gpu-id 0
+      --paths.dev corpus/dev.spacy --nlp.lang en --gpu-id -1
   deps:
     - path: configs/config.conf
       md5: 62edaefafb07e5a1eee4a61bad9228f2
     - path: corpus/train.spacy
-      md5: 15a2309eb542df0d1bf23500f0136481
+      md5: c74321a0456a792deea553e1a376b4c5
     - path: corpus/dev.spacy
-      md5: 7ac945af1aa33fce00e3cd9c5e46df34
+      md5: f3769c715681216c1f3ca3bb0dd403b6
   outs:
     - path: training/model-best
-      md5: 6339b6a09302942de54041fc7b869139
+      md5: 3b70ebba9aa454dc8c06dbdaad8f1b4f
   spacy_version: 3.2.4
   spacy_git_version: b50fe5ec6
 convert:
   cmd: python -m spacy run convert
   script:
-    - python scripts/convert.py 0.8
+    - python scripts/convert.py 0.8 ../data/training/training_cleaned.csv.gz
   deps:
     - path: scripts/convert.py
-      md5: 4faed0c5c0b7f8d0828429a80a075ce1
-    - path: ../data/filtered.csv.gz
-      md5: 4d6eb265d2b0c5cb1b7b347ff3925cfb
+      md5: 5913519485fc44b1e0239cf48a19f53b
+    - path: ../data/training/training_cleaned.csv.gz
+      md5: 7110af1d05f8faebcb279c8493b75e87
   outs:
     - path: corpus/train.spacy
-      md5: 15a2309eb542df0d1bf23500f0136481
+      md5: c74321a0456a792deea553e1a376b4c5
     - path: corpus/dev.spacy
-      md5: 7ac945af1aa33fce00e3cd9c5e46df34
+      md5: f3769c715681216c1f3ca3bb0dd403b6
   spacy_version: 3.2.4
   spacy_git_version: b50fe5ec6
 evaluate:
@@ -37,12 +37,12 @@ evaluate:
     - python -m spacy evaluate training/model-best corpus/dev.spacy --output training/metrics.json
   deps:
     - path: corpus/dev.spacy
-      md5: 7ac945af1aa33fce00e3cd9c5e46df34
+      md5: f3769c715681216c1f3ca3bb0dd403b6
     - path: training/model-best
-      md5: 6339b6a09302942de54041fc7b869139
+      md5: 3b70ebba9aa454dc8c06dbdaad8f1b4f
   outs:
     - path: training/metrics.json
-      md5: e3cf724af8e7242f8a83cbeedb373511
+      md5: 93bb78c8372ce6b49c6f5fb6b7aa2657
   spacy_version: 3.2.4
   spacy_git_version: b50fe5ec6
 package:
@@ -52,10 +52,10 @@ package:
       --version 0.0.0 --force
   deps:
     - path: training/model-best
-      md5: 6339b6a09302942de54041fc7b869139
+      md5: 3b70ebba9aa454dc8c06dbdaad8f1b4f
   outs:
     - path: packages/en_textcat_clickbait-0.0.0/dist/en_textcat_clickbait-0.0.0.tar.gz
-      md5: 30054b540a2267745734ecf7fd5567e5
+      md5: d294c8ad25ee22abe160f6ac49fca6bf
   spacy_version: 3.2.4
   spacy_git_version: b50fe5ec6
 predict:
@@ -64,11 +64,11 @@ predict:
     - python scripts/analyze-trends.py
   deps:
     - path: ../data
-      md5: 3c80e249c85a1b4c86df4538f34191b1
+      md5: e45a2514b46420d9669f0bb1e8fb1e6d
     - path: scripts/analyze-trends.py
-      md5: 5f340171a55c6881461cef9ff70658e9
+      md5: 8aca3055eeb4b283c0c202acf540bade
     - path: scripts/en_textcat_clickbait
-      md5: 4b0e75c5f64a8ae4e1d558baa5f314d1
+      md5: cea291ee870d09f80113051cf0b7a92b
   outs: []
   spacy_version: 3.2.4
   spacy_git_version: b50fe5ec6

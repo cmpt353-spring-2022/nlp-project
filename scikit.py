@@ -14,7 +14,7 @@ import analyze
 import statsmodels.api as sm
 from scipy import stats
 
-combined = pd.read_csv("data/filtered.csv.gz")
+combined = pd.read_csv("data/training/training_cleaned.csv.gz")
 X_train, X_test, y_train, y_test = train_test_split(combined.title, combined.clickbait)
 
 print()
@@ -121,12 +121,13 @@ plt.savefig("scikitModels.png", bbox_inches='tight', dpi=72)
 
 #groups it by month of the year to get enough data points for statistical testing
 
-sub_data_files = ["data/UpliftingNews_lg.csv.gz", 
-                "data/nottheonion_lg.csv.gz",\
-                 "data/worldnews_lg.csv.gz", 
-                 "data/politics_lg.csv.gz", 
-                 "data/news_lg.csv.gz",
-                 "data/canadapolitics_lg.csv.gz"]
+# =============================================================================
+sub_data_files = ["data/classification/upliftingnews.csv.gz", 
+                "data/classification/nottheonion.csv.gz",\
+                 "data/classification/worldnews.csv.gz", 
+                 "data/classification/politics.csv.gz", 
+                 "data/classification/news.csv.gz",
+                 "data/classification/canadapolitics.csv.gz"]
 names = ["Uplifting News", 
         "Not The Onion", 
         "World News", 
@@ -159,7 +160,7 @@ sns.set_theme()
 plt.legend( bbox_to_anchor=(1.05, 1),loc="upper left")
 plt.xlabel("Year")
 plt.ylabel("% of clickbait titles")
-plt.title("Percentage of clickbait titles in selected news subreddits over the years")
+plt.title("Scikit ComplementNB Classifier")
 plt.savefig("baitPercentage.png", dpi=72, bbox_inches='tight')
 
 
@@ -167,18 +168,7 @@ plt.savefig("baitPercentage.png", dpi=72, bbox_inches='tight')
 plt.figure(dpi=1200)
 
 df_all = pd.DataFrame()
-sub_data_files = ["data/UpliftingNews_lg.csv.gz", 
-                "data/nottheonion_lg.csv.gz",\
-                 "data/worldnews_lg.csv.gz", 
-                 "data/politics_lg.csv.gz", 
-                 "data/news_lg.csv.gz",
-                 "data/canadapolitics_lg.csv.gz"]
-names = ["Uplifting News", 
-        "Not The Onion", 
-        "World News", 
-        "Politics", 
-        "News",
-        "Canada Politics"]
+
 
 
 #For plotting
