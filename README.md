@@ -73,9 +73,11 @@ Results from all 3 approaches differed a bit, but still showed the same trends, 
 
 ### Data analysis
 
-- `python analyze.py`
+- `analyze.py` has some functions used for analysis in `scikit.py`
 
-- `python clickbait-means.py`
+- `python clickbait-means.py path_to_prediction_directory`
+
+- `python compare-ml-models.py`
 
 
 ### Using Spacy

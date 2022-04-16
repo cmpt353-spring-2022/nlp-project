@@ -15,4 +15,13 @@ Other commands:
 - `convert`
 - `train`
 - `evaluate`
+- `package`
 - `visualize-model`
+
+## Analysis
+
+### Predictions
+
+After packaging, 
+
+`spacy project run predict`
