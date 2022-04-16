@@ -9,12 +9,12 @@ import analyze
 from pathlib import Path
 
 sub_data_files = [
-    "data/classification/upliftingnews.csv.gz",
-    "data/classification/nottheonion.csv.gz",
-    "data/classification/worldnews.csv.gz",
-    "data/classification/politics.csv.gz",
-    "data/classification/news.csv.gz",
-    "data/classification/canadapolitics.csv.gz",
+    "../data/classification/upliftingnews.csv.gz",
+    "../data/classification/nottheonion.csv.gz",
+    "../data/classification/worldnews.csv.gz",
+    "../data/classification/politics.csv.gz",
+    "../data/classification/news.csv.gz",
+    "../data/classification/canadapolitics.csv.gz",
 ]
 names = [
     "Uplifting News",
@@ -56,7 +56,7 @@ def main():
     else:
         print("Using CPU for predictions")
     nlp = en_textcat_clickbait.load()
-    for name, file in zip(names, sub_data_files):
+    for realname, file in zip(names, sub_data_files):
         name = Path(Path(file).stem).stem
         output_file = f"predictions/{name}.csv.gz"
         if not os.path.isfile(output_file):
@@ -65,16 +65,17 @@ def main():
             df = pd.read_csv(output_file)
         output, test_res = analyze.get_cb_ratio(df)
         print(test_res)
-        plt.plot(output.year, output.cb_ratio, label=names)
+        plt.plot(output.year, output.cb_ratio, label=realname)
     sns.set_theme()
 
-    plt.legend(loc="upper left")
+    plt.legend(bbox_to_anchor=(1.05, 1),loc="upper left")
     plt.xlabel("Year")
     plt.ylabel("% of clickbait titles")
     plt.title(
-        "Percentage of clickbait titles in selected news subreddits over the years (Textcat)"
+        "Spacy Textcat Classifier"
     )
-    plt.show()
+    plt.savefig('spacy-trends.png', dpi=72, bbox_inches='tight')
+    # plt.show()
 
 
 if __name__ == "__main__":

@@ -161,7 +161,7 @@ sns.set_theme()
 plt.legend( bbox_to_anchor=(1.05, 1),loc="upper left")
 plt.xlabel("Year")
 plt.ylabel("% of clickbait titles")
-plt.title("Percentage of clickbait titles in selected news subreddits over the years")
+plt.title("Scikit ComplementNB Classifier")
 plt.savefig("baitPercentage.png", dpi=72, bbox_inches='tight')
 
 
