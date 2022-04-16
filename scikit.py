@@ -13,6 +13,7 @@ import pymannkendall as mk
 import analyze
 import statsmodels.api as sm
 from scipy import stats
+from pathlib import Path
 
 combined = pd.read_csv("data/training/training_cleaned.csv.gz")
 X_train, X_test, y_train, y_test = train_test_split(combined.title, combined.clickbait)
@@ -102,9 +103,10 @@ scores.append(model_NB_SGD.score(X_test, y_test))
 scores.append(model_NB_C.score(X_test, y_test))
 scores.append(model_percp.score(X_test, y_test))
 
-names = ['Multinomial', 'SGD', 'Complement', 'Perceptron']
+model_names = ['Multinomial', 'SGD', 'Complement', 'Perceptron']
+models = [model_NB_M, model_NB_SGD, model_NB_C, model_percp]
 scores_dt2 = pd.DataFrame(scores, columns=["Scores"])
-scores_dt2["names"] = names
+scores_dt2["names"] = model_names
 scores_dt2['vectorizer'] = "Count"
 scores_dt = pd.concat([scores_dt, scores_dt2])
 
@@ -135,7 +137,7 @@ names = ["r/UpliftingNews",
         "r/News",
         "r/CanadaPolitics"]
 
-def predict(subreddit: str, model: Pipeline):
+def predict(subreddit: str, model: Pipeline, name: str):
     df = pd.read_csv(subreddit)
     df = df.dropna(subset=['title'])
     if ('created' in df.columns):
@@ -147,12 +149,18 @@ def predict(subreddit: str, model: Pipeline):
     df['prediction'] = model.predict(df.title)
     return df
 
+for model, model_name in zip(models, model_names):
+    for file, name in zip(sub_data_files, names):
+        df = predict(file, model_NB_C, name)
+        Path(f"./data/predictions/scikit/{model_name.lower()}/").mkdir(parents=True, exist_ok=True)
+        df.to_csv(f"./data/predictions/scikit/{model_name.lower()}/{name}.csv.gz", compression='gzip', index=False)
+
 plt.figure()
-for file, names in zip(sub_data_files, names):
-    df = predict(file, model_NB_C)
+for file, name in zip(sub_data_files, names):
+    df = predict(file, model_NB_C, name)
     output, test_res = analyze.get_cb_ratio(df)
     print(test_res)
-    plt.plot(output.year, output.cb_ratio, label=names)
+    plt.plot(output.year, output.cb_ratio, label=f"/r/{name}")
 
 
 sns.set_theme()

@@ -58,7 +58,7 @@ def main():
     nlp = en_textcat_clickbait.load()
     for realname, file in zip(names, sub_data_files):
         name = Path(Path(file).stem).stem
-        output_file = f"predictions/{name}.csv.gz"
+        output_file = f"../../data/predictions/spacy/{name}.csv.gz"
         if not os.path.isfile(output_file):
             df = predict(file, nlp, output_file)
         else:
